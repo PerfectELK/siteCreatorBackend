@@ -1,16 +1,20 @@
-const {app, BrowserWindow, ipcMain} = require('electron');
+const {app, BrowserWindow} = require('electron');
 const path = require('path');
 const url = require('url');
+
 let win;
 
 const {createWindow,buildPath} = require('./core/start');
 
-ipcMain.on('test', () => {
-    console.log('test');
-});
+
+
+
 
 app.on('ready', () =>{
-    createWindow(buildPath("index.ejs"));
+    createWindow(buildPath("index.ejs"),(win) => {
+        require('./modules/ipc/ipcMain')(win);
+    });
+
 });
 
 app.on('window-all-closed', () => {
@@ -18,3 +22,4 @@ app.on('window-all-closed', () => {
         app.quit()
     }
 });
+

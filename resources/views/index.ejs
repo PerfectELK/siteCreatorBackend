@@ -9,13 +9,13 @@
                 </ul>
                 <div class="navbar__icons">
                     <div class="nav-icons__container">
-                        <div class="icon-item__block">
-                            <div class="icon-item turn"></div>
+                        <div class="icon-item__block" v-on:click="turnAppWindow">
+                            <div class="icon-item turn" ></div>
                         </div>
-                        <div class="icon-item__block">
-                            <div class="icon-item resize"></div>
+                        <div class="icon-item__block" v-on:click="fullResizeWindow">
+                            <div class="icon-item resize" ></div>
                         </div>
-                        <div class="icon-item__block">
+                        <div class="icon-item__block" v-on:click="closeApp">
                             <div class="icon-item close"></div>
                         </div>
                     </div>
