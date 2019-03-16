@@ -4,7 +4,8 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "postinstall": "install-app-deps"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +15,7 @@
   },
   "dependencies": {
     "ejs-electron": "^2.0.3",
-    "jquery": "^3.3.1"
+    "electron-builder": "^20.39.0",
+    "sqlite3": "^4.0.6"
   }
 }

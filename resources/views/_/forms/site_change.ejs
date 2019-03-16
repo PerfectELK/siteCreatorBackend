@@ -1,0 +1,24 @@
+<script type="text/x-template" id="siteChangeForm">
+    <div class="modal-body__change">
+        <div class="change-container">
+            <h1>Изменение сайта</h1>
+            <div class="input-container">
+                <label for="name">Название:</label>
+                <input type="text" id="name">
+                <label for="apache">Конфиг apache2:</label>
+                <textarea name="" id="apache" cols="30" rows="10"></textarea>
+                <label for="nginx">Конфиг nginx:</label>
+                <textarea name="" id="nginx" cols="30" rows="10"></textarea>
+                <div class="btn-container">
+                    <button class="save-btn" v-on:click="change">
+                        Сохранить
+                    </button>
+                    <button class="cancel-btn" v-on:click="quit">
+                        Отмена
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</script>
