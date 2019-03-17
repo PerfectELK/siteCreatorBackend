@@ -2,53 +2,82 @@ const {app, BrowserWindow} = require('electron');
 const path = require('path');
 const url = require('url');
 
-let win;
+
 
 const {createWindow,buildPath} = require('./core/start');
 
 const db = require('./core/vendor/sqlite/sqlite');
 
+db.checkTableExist("presets",(res) => {
+    if(res == 0){
+        require('./core/vendor/sqlite/patch/patch_presets')();
+    }
+})
 
-// db.createTable("test",["id INTEGER PRIMARY KEY AUTOINCREMENT","name TEXT","content TEXT"]);
-// db.insertDataInTable('test',{name:"test",content:"text"});
-// db.selectRowsAll('test',(data) => {
-//     db_res = data;
-//     console.log(db_res);
+
+// db.insertDataInTable("presets",{
+//    name:"test1",
+//    site_path:"/var/www/sites",
+//    apache2_path:"/etc/apache2",
+//    nginx_path:"/etc/nginx",
+//    apache2_template:"lol kek cheburek",
+//    nginx_template:"kek lol arbidol",
 // });
-//db.__adapter().close();
-let where = {
-    and:[
-        ["kek","=","'cheburek'"],
-        ["lol","=","'arbidol'"],
-    ],
-    orderby:[
-        ["kek","ASC"],
-        ["lol","DESC"],
-    ],
-    join: {
-        type:"INNER JOIN",
-        table:"kekuashvilli",
-        and:[
-            ["kek","=","kekcheburek"],
-            ["lul","=","lolarbidol"],
-        ]
-    },
 
-};
-db.selectRowsWhere("test",where,function (data) {
-    console.log(1);
+
+let presets = require('./modules/entityes/presets/entity');
+
+let collection = require('./modules/collections/collection');
+
+let presetsCollections = new collection(presets);
+
+presetsCollections.getSimpleItems({},(items) => {
+
 });
 
-// app.on('ready', () =>{
-//     createWindow(buildPath("index.ejs"),(win) => {
-//         require('./modules/ipc/ipcMain')(win);
-//     });
-//
-// });
-//
-// app.on('window-all-closed', () => {
-//     if (process.platform !== 'darwin') {
-//         app.quit()
-//     }
-// });
+
+
+
+
+
+
+
+
+
+
+// let where = {
+//     and:[
+//         ["kek","=","'cheburek'"],
+//         ["lol","=","'arbidol'"],
+//     ],
+//     orderby:[
+//         ["kek","ASC"],
+//         ["lol","DESC"],
+//     ],
+//     join: {
+//         type:"INNER JOIN",
+//         table:"kekuashvilli",
+//         and:[
+//             ["kek","=","kekcheburek"],
+//             ["lul","=","lolarbidol"],
+//         ]
+//     },
+// };
+
+
+
+let win;
+
+app.on('ready', () =>{
+    createWindow(buildPath("index.ejs"),(win) => {
+        require('./modules/ipc/ipcMain')(win);
+    });
+
+});
+
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        app.quit()
+    }
+});
 
