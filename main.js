@@ -25,15 +25,28 @@ db.checkTableExist("presets",(res) => {
 // });
 
 
-let presets = require('./modules/entityes/presets/entity');
+let presets = require('./modules/entities/presets/entity');
 
-let collection = require('./modules/collections/collection');
 
-let presetsCollections = new collection(presets);
-
-presetsCollections.getSimpleItems({},(items) => {
-
+let preset = new presets({});
+preset.load(4,(obj)=>{
+    obj.name = 'lololol';
+    obj.save();
+    console.log(obj.getItem());
 });
+
+// preset.load(1,obj => {
+//    console.log(obj.getItem());
+// });
+
+
+//let collection = require('./modules/collections/collection');
+
+// let presetsCollections = new collection(presets);
+//
+// presetsCollections.getSimpleItems({},(items) => {
+//
+// });
 
 
 

@@ -165,7 +165,7 @@ module.exports = {
         })
         db.close();
     },
-    updateRowsWhere: function(table, set = {},where = {},callback){
+    updateRowsWhere: function(table, set = {},where = {}){
         let and = this.checkAnd(where);
         let setStr = this.checkSet(set);
         let db = this.new__adapter();
