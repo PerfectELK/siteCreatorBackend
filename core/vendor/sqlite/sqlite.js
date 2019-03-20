@@ -112,8 +112,10 @@ module.exports = {
         return "";
     },
     checkJoin: function (where, selectTable) {
-        if (where.join != null) {
-            let join = where.join;
+
+        if (where.joi != null) {
+
+            let join = where.joi;
             var joinString = join.type + " " + join.table + " ON ";
             let and = join.and;
 
@@ -172,6 +174,25 @@ module.exports = {
         let queryString = `UPDATE ${table} ${setStr} ${and}`;
         db.serialize(() => {
            db.run(queryString);
+        });
+        db.close();
+    },
+    deleteRowsWhere:function(table,where = {}){
+        let db = this.new__adapter();
+        let and = this.checkAnd(where);
+
+        let queryString = `DELETE FROM ${table} ${and}`;
+        db.serialize(() => {
+           db.run(queryString);
+        });
+        db.close();
+    },
+    deleteWithId:function(table,id){
+        let db = this.new__adapter();
+
+        let queryString = `DELETE FROM ${table} WHERE id = ${id}`;
+        db.serialize(() => {
+            db.run(queryString);
         });
         db.close();
     }

@@ -1,4 +1,5 @@
-let db = require('./../../core/vendor/sqlite/sqlite');
+const db = require('./../../core/vendor/sqlite/sqlite');
+const collection = require('../collections/collection');
 
  class entity{
 
@@ -42,6 +43,26 @@ let db = require('./../../core/vendor/sqlite/sqlite');
             }
             callback(this);
         })
+    }
+
+    delete(){
+        if(this.item.id != undefined){
+            db.deleteWithId(this.getTableName(),this.item.id);
+        }
+    }
+
+     getSimpleItems(whereConditions = {},className,callback){
+
+        db.selectRowsWhere(this.getTableName(), whereConditions,(res) => {
+
+            let coll = new collection(className);
+            for (let i = 0; i < res.length; i++) {
+                let item = new className(res[i]);
+                coll.addItem(item);
+            }
+            callback(coll);
+        });
+
     }
 
 

@@ -3,7 +3,7 @@ let db = require("./../../core/vendor/sqlite/sqlite");
 
 class collection{
 
-    constructor(objectClass,tableName){
+    constructor(objectClass){
         this.objectClass = objectClass;
         this.tableName = new this.objectClass().getTableName();
         this.items = [];
@@ -23,6 +23,10 @@ class collection{
             callback(res);
         });
 
+    }
+
+    addItem(item){
+        this.items.push(item);
     }
 
 

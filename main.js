@@ -29,11 +29,16 @@ let presets = require('./modules/entities/presets/entity');
 
 
 let preset = new presets({});
-preset.load(4,(obj)=>{
-    obj.name = 'lololol';
-    obj.save();
-    console.log(obj.getItem());
-});
+
+preset.getSimpleItems([],presets,(collection) => {
+    let items = collection.getItems();
+    let item = items[1];
+    item.nginx_path = "kekarbidol";
+    console.log(item);
+})
+
+
+
 
 // preset.load(1,obj => {
 //    console.log(obj.getItem());
