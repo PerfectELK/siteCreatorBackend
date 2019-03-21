@@ -30,11 +30,13 @@ let presets = require('./modules/entities/presets/entity');
 
 let preset = new presets({});
 
-preset.getSimpleItems([],presets,(collection) => {
-    let items = collection.getItems();
-    let item = items[1];
-    item.nginx_path = "kekarbidol";
-    console.log(item);
+preset.getSimpleItems([],(collection) => {
+
+    console.log(collection);
+    // let items = collection.getItems();
+    // let item = items[1];
+    // item.nginx_path = "kekarbidol";
+    // console.log(item);
 })
 
 
@@ -84,18 +86,18 @@ preset.getSimpleItems([],presets,(collection) => {
 
 
 
-let win;
-
-app.on('ready', () =>{
-    createWindow(buildPath("index.ejs"),(win) => {
-        require('./modules/ipc/ipcMain')(win);
-    });
-
-});
-
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit()
-    }
-});
+// let win;
+//
+// app.on('ready', () =>{
+//     createWindow(buildPath("index.ejs"),(win) => {
+//         require('./modules/ipc/ipcMain')(win);
+//     });
+//
+// });
+//
+// app.on('window-all-closed', () => {
+//     if (process.platform !== 'darwin') {
+//         app.quit()
+//     }
+// });
 

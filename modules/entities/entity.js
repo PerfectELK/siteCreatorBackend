@@ -3,8 +3,9 @@ const collection = require('../collections/collection');
 
  class entity{
 
-    constructor(item = {}){
+    constructor(item = {},className) {
         this.item = item;
+        this.className = className;
     }
 
     getTableName(){
@@ -51,16 +52,17 @@ const collection = require('../collections/collection');
         }
     }
 
-     getSimpleItems(whereConditions = {},className,callback){
-
+     getSimpleItems(whereConditions = {},callback){
         db.selectRowsWhere(this.getTableName(), whereConditions,(res) => {
 
-            let coll = new collection(className);
+            let coll = new collection(this.className);
             for (let i = 0; i < res.length; i++) {
-                let item = new className(res[i]);
+                let item = new this.className(res[i]);
                 coll.addItem(item);
             }
             callback(coll);
+
+
         });
 
     }

@@ -3,7 +3,7 @@ let entity = require('./../entity');
 class presets extends entity{
 
     constructor(item){
-        super(item);
+        super(item,presets);
         this.tableName = "presets";
     }
 
