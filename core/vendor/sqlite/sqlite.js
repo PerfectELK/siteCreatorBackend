@@ -58,7 +58,6 @@ module.exports = {
                     }
                     keys = keys.join(', ');
                     dataArr = dataArr.join(', ');
-
                     db.run(`INSERT INTO ${table} (${keys}) VALUES (${dataArr})`);
                 });
                 db.close();

@@ -1,5 +1,6 @@
 
 var ipcRenderer = require('electron').ipcRenderer;
+var ipcMain = require('electron').ipcMain;
 
 var modalDelete = Vue.component('modal-body',{
     data:function(){
@@ -42,6 +43,9 @@ var main = Vue.component('main-c',{
         return{
             modalClose:true,
             currentModal:'modalDelete',
+            create:{
+                input:"",
+            }
         }
     },
     components:{
@@ -59,6 +63,10 @@ var main = Vue.component('main-c',{
         deleteSiteModal:function(siteName){
             this.currentModal = 'modalDelete';
             this.getModal();
+        },
+        createSite:function(){
+            console.log(this.create.input);
+            ipcRenderer.send('createSite',this.create.input);
         }
     },
     computed:{
@@ -73,11 +81,49 @@ var main = Vue.component('main-c',{
 var options = Vue.component('options-c',{
     data:() =>{
         return{
-
+            configFields:{
+                id:"",
+                name:"",
+                sitePath:"",
+                apache2Path:"",
+                nginxPath:"",
+                apache2Template:"",
+                nginxTemplate:"",
+            },
+            configs:[],
         }
+    },
+    methods:{
+        saveSiteConfig:function(){
+            ipcRenderer.send('saveSiteConfig',this.configFields);
+        },
+        createSiteConfig:function(){
+            ipcRenderer.send('createSiteConfig');
+        },
+        deleteSiteConfig:function(){
+            ipcRenderer.send('deleteSiteConfig',this.configFields.id);
+        }
+    },
+    mounted: function () {
+        ipcRenderer.on('siteWasCreated',() => {
+            ipcRenderer.send('getSiteConfig');
+        });
+        ipcRenderer.on('putSiteConfigs',(e,data) => {
+            this.configs = data;
+        });
+    },
+    destroyed: function () {
+        ipcRenderer.removeListener('siteWasCreated',() => {});
+        ipcRenderer.removeListener('getSiteConfig',() => {});
+
     },
     template:"#options"
 });
+
+
+
+
+
 
 var exit = Vue.component('exit-c',{
     data:() =>{

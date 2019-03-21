@@ -4,8 +4,8 @@
             <div class="create-site">
                 <div class="create-site__container">
                     <label class="create-site__label">Название:</label>
-                    <input type="text" class="create-site__input site_name">
-                    <button class="create-site__btn">
+                    <input type="text" class="create-site__input site_name" v-model="create.input">
+                    <button class="create-site__btn" v-on:click="createSite">
                         Создать сайт
                     </button>
                 </div>

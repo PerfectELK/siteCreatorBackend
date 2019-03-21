@@ -22,7 +22,7 @@
                     <div class="new-preset">
                         <div class="new-preset__container">
                             <div class="new-preset__item">
-                                <a href="#" class="item-link">
+                                <a href="javascript:void(0)" class="item-link" v-on:click="createSiteConfig">
                                     <svg class="icon-svg">
                                         <use xlink:href="./../static/img/svg/sprite.svg#plus">
                                         </use>
@@ -38,25 +38,25 @@
                     <div class="options-data__inputs">
                         <div class="input__option-container">
                             <label for="presetName">Название пресета:</label>
-                            <input id="presetName" type="text" class="input__option">
+                            <input id="presetName" type="text" class="input__option" v-model="configFields.name">
                         </div>
                         <div class="input__option-container">
                             <label for="sitePath">Путь до директории с сайтами:</label>
-                            <input id="sitePath" type="text" class="input__option">
+                            <input id="sitePath" type="text" class="input__option" v-model="configFields.sitePath">
                         </div>
                         <div class="input__option-container">
                             <label for="apache2path">Путь до директории с apache2:</label>
-                            <input id="apache2path" type="text" class="input__option">
+                            <input id="apache2path" type="text" class="input__option" v-model="configFields.apache2Path">
                         </div>
                         <div class="input__option-container">
                             <label for="nginxPath">Путь до директории с nginx:</label>
-                            <input id="nginxPath" type="text" class="input__option">
+                            <input id="nginxPath" type="text" class="input__option" v-model="configFields.nginxPath">
                         </div>
                     </div>
                     <div class="options-data__inputs-right">
                         <div class="textarea__container">
                             <label for="apache2__template">Шаблон конфига apache2:</label>
-                            <textarea id="apache2__template" name="" cols="50" rows="20" class="textarea__option">
+                            <textarea id="apache2__template" name="" cols="50" rows="20" class="textarea__option" v-model="configFields.apache2Template">
                                 <plaintext>
 
                                 <VirtualHost *:17080>
@@ -89,7 +89,7 @@
                         </div>
                         <div class="textarea__container">
                             <label for="nginx__template">Шаблон конфига nginx:</label>
-                            <textarea id="nginx__template" name="" cols="50" rows="20" class="textarea__option">
+                            <textarea id="nginx__template" name="" cols="50" rows="20" class="textarea__option" v-model="configFields.nginxTemplate">
                                 <plaintext>
                             server {
 
@@ -158,12 +158,12 @@
             <div class="options-submit">
                 <div class="options-submit__container">
                     <div class="submit">
-                        <button class="submit-option">
+                        <button class="submit-option" v-on:click="saveSiteConfig">
                             Сохранить
                         </button>
                     </div>
                     <div class="submit">
-                        <button class="submit-option">
+                        <button class="submit-option" v-on:click="deleteSiteConfig">
                             Удалить
                         </button>
                     </div>

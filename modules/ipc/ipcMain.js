@@ -14,4 +14,6 @@ module.exports = (win) => {
         win.close();
     })
 
+    require('./sites/sites')(win);
+
 }
