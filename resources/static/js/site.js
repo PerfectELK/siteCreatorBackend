@@ -78,8 +78,25 @@ var main = Vue.component('main-c',{
 });
 
 
+
+
+
+var presetsBtn = Vue.component('preset-btn', {
+    data: function () {
+        return {}
+    },
+    props: ['item'],
+    methods: {
+        selectPreset:function(){
+            this.$emit('select',this.item.item);
+        }
+    },
+    template: '<div class="preset-list__item"><button class="preset-item" v-on:click="selectPreset(item.item)">{{ item.item.name }}</button></div>'
+});
+
+
 var options = Vue.component('options-c',{
-    data:() =>{
+    data:function(){
         return{
             configFields:{
                 id:"",
@@ -98,24 +115,41 @@ var options = Vue.component('options-c',{
             ipcRenderer.send('saveSiteConfig',this.configFields);
         },
         createSiteConfig:function(){
+            console.log('create begin');
             ipcRenderer.send('createSiteConfig');
         },
         deleteSiteConfig:function(){
             ipcRenderer.send('deleteSiteConfig',this.configFields.id);
+        },
+        selectPreset:function(item){
+            this.configFields.id = item.id;
+            this.configFields.name = item.name;
+            this.configFields.sitePath = item.site_path;
+            this.configFields.apache2Path = item.apache2_path;
+            this.configFields.nginxPath = item.nginx_path;
+            this.configFields.apache2Template = item.apache2_template;
+            this.configFields.nginxTemplate = item.nginx_template;
         }
     },
-    mounted: function () {
+    components:{
+        presetsBtn:presetsBtn,
+    },
+    created:function(){
+        ipcRenderer.send('getSiteConfigs');
         ipcRenderer.on('siteWasCreated',() => {
-            ipcRenderer.send('getSiteConfig');
+            ipcRenderer.send('getSiteConfigs');
         });
         ipcRenderer.on('putSiteConfigs',(e,data) => {
             this.configs = data;
+            console.log(this.configs);
         });
     },
-    destroyed: function () {
-        ipcRenderer.removeListener('siteWasCreated',() => {});
-        ipcRenderer.removeListener('getSiteConfig',() => {});
+    mounted: function () {
 
+    },
+    destroyed:function(){
+        ipcRenderer.removeAllListeners('getSiteConfigs');
+        ipcRenderer.removeAllListeners('putSiteConfigs');
     },
     template:"#options"
 });

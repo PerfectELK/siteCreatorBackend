@@ -11,11 +11,7 @@
                         </div>
                         <div class="preset-list__items">
 
-
-                            <div class="preset-list__item">
-                                <button class="preset-item">Название пресета 1</button>
-                            </div>
-
+                            <presets-btn v-for="conf in configs" v-bind:item="conf" v-on:select="selectPreset"></presets-btn>
 
                         </div>
                     </div>

@@ -7,7 +7,8 @@ module.exports = {
         return this.a;
     },
     new__adapter: function(){
-        return new sqlite3.Database(config.dbName);
+        //return new sqlite3.Database(config.dbName);
+        return this.a;
     },
     createTable: function (name, fields = []) {
         name = name.trim();
@@ -21,7 +22,7 @@ module.exports = {
                     db.run(`CREATE TABLE IF NOT EXISTS ${name} (${fields})`);
 
                 });
-                db.close();
+               // db.close();
             } catch (e) {
                 return false;
             } finally {
@@ -40,7 +41,7 @@ module.exports = {
           });
 
       });
-      db.close();
+      //db.close();
     },
     insertDataInTable: function (table, data = {}) {
         table = table.trim();
@@ -60,7 +61,7 @@ module.exports = {
                     dataArr = dataArr.join(', ');
                     db.run(`INSERT INTO ${table} (${keys}) VALUES (${dataArr})`);
                 });
-                db.close();
+               // db.close();
             } catch (e) {
                 return false;
             } finally {
@@ -73,7 +74,7 @@ module.exports = {
         let db = this.new__adapter();
         db.all(`SELECT * FROM ${table}`, (err, result) => {
             callback(result);
-            db.close();
+            //db.close();
         });
 
     },
@@ -164,7 +165,7 @@ module.exports = {
         db.all(queryString, (err, result) => {
             callback(result);
         })
-        db.close();
+        //db.close();
     },
     updateRowsWhere: function(table, set = {},where = {}){
         let and = this.checkAnd(where);
@@ -174,7 +175,7 @@ module.exports = {
         db.serialize(() => {
            db.run(queryString);
         });
-        db.close();
+       // db.close();
     },
     deleteRowsWhere:function(table,where = {}){
         let db = this.new__adapter();
@@ -184,7 +185,7 @@ module.exports = {
         db.serialize(() => {
            db.run(queryString);
         });
-        db.close();
+        //db.close();
     },
     deleteWithId:function(table,id){
         let db = this.new__adapter();
@@ -193,7 +194,7 @@ module.exports = {
         db.serialize(() => {
             db.run(queryString);
         });
-        db.close();
+        //db.close();
     }
 
 

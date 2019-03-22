@@ -5,7 +5,7 @@ const presets = require('./../../entities/presets/entity');
 module.exports = (win) => {
 
     ipcMain.on('createSite',(e,input)=>{
-        console.log(input);
+
     });
 
     ipcMain.on('createSiteConfig',(e) => {
@@ -21,11 +21,33 @@ module.exports = (win) => {
     });
 
     ipcMain.on('getSiteConfigs',(e) => {
-       console.log('geted');
         let configs = new presets({});
         configs.getSimpleItems({},(collection) => {
-            console.log(collection);
+            e.sender.send('putSiteConfigs',collection.items);
         })
+    });
+
+    ipcMain.on('deleteSiteConfig',(e,id) => {
+        let config = new presets({});
+        config.load(id,(config) => {
+            config.delete();
+            e.sender.send('siteWasCreated');
+        })
+    })
+
+    ipcMain.on('saveSiteConfig',(e,item) => {
+       let config = new presets({});
+       config.load(item.id,(config) => {
+          config.name = item.name;
+          config.site_path = item.sitePath;
+          config.apache2_path = item.apache2Path;
+          config.nginx_path = item.nginxPath;
+          config.apache2_template = item.apache2Template;
+          config.nginx_template = item.nginxTemplate;
+
+          config.save();
+           e.sender.send('siteWasCreated');
+       });
     });
 
 }
