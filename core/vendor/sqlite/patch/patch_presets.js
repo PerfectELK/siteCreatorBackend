@@ -10,6 +10,7 @@ module.exports = () => {
         "nginx_path TEXT",
         "apache2_template TEXT",
         "nginx_template TEXT",
+        "active INTEGER"
     ]);
 
 }

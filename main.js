@@ -1,8 +1,10 @@
 const {app, BrowserWindow} = require('electron');
 const path = require('path');
+global.appRoot = path.resolve(__dirname);
 const url = require('url');
-
+const electron = require('electron');
 const {createWindow,buildPath} = require('./core/start');
+const fs = require('fs');
 
 const db = require('./core/vendor/sqlite/sqlite');
 
@@ -11,6 +13,8 @@ db.checkTableExist("presets",(res) => {
         require('./core/vendor/sqlite/patch/patch_presets')();
     }
 })
+
+
 
 
 // let where = {
@@ -37,6 +41,8 @@ db.checkTableExist("presets",(res) => {
 let win;
 
 app.on('ready', () =>{
+    const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
+    fs.writeFileSync('./config.json',JSON.stringify({width:width,height:height}));
     createWindow(buildPath("index.ejs"),(win) => {
         require('./modules/ipc/ipcMain')(win);
     });

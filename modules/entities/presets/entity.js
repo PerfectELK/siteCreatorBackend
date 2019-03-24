@@ -11,6 +11,10 @@ class presets extends entity{
         return this.item.id;
     }
 
+    get active(){
+        return this.item.active;
+    }
+
     get name(){
         return this.item.name;
     }
@@ -33,6 +37,10 @@ class presets extends entity{
 
     get nginx_template(){
         return this.item.nginx_template;
+    }
+
+    set active(active){
+        this.item.active = active;
     }
 
     set name(name){

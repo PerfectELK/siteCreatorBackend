@@ -96,6 +96,7 @@ var presetsBtn = Vue.component('preset-btn', {
 
 
 var options = Vue.component('options-c',{
+
     data:function(){
         return{
             configFields:{
@@ -129,19 +130,31 @@ var options = Vue.component('options-c',{
             this.configFields.nginxPath = item.nginx_path;
             this.configFields.apache2Template = item.apache2_template;
             this.configFields.nginxTemplate = item.nginx_template;
+        },
+        checkActivePreset:function(){
+          for(var i = 0; i < this.configs.length; i++){
+              if(this.configs[i].item.active){
+                  return this.configs[i].item;
+              }
+          }
+        },
+        setActiveSiteConfig:function(){
+            ipcRenderer.send('setActiveSiteConfig',this.configFields.id);
         }
     },
     components:{
         presetsBtn:presetsBtn,
     },
     created:function(){
+
+
         ipcRenderer.send('getSiteConfigs');
         ipcRenderer.on('siteWasCreated',() => {
             ipcRenderer.send('getSiteConfigs');
         });
         ipcRenderer.on('putSiteConfigs',(e,data) => {
             this.configs = data;
-            console.log(this.configs);
+            this.selectPreset(this.checkActivePreset());
         });
     },
     mounted: function () {

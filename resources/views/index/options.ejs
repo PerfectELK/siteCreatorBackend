@@ -55,97 +55,13 @@
                             <textarea id="apache2__template" name="" cols="50" rows="20" class="textarea__option" v-model="configFields.apache2Template">
                                 <plaintext>
 
-                                <VirtualHost *:17080>
-                                    ServerName october.localhost
-                                    ServerAlias www.october.localhost
-
-                                    ServerAdmin perfect-elk@perfect-elk.ru
-                                    DocumentRoot /var/www/sites/october.localhost/html
-                                    DirectoryIndex index.php index.html index.htm
-
-                                    <Directory /var/www/sites/october.localhost/html>
-                                        Options FollowSymLinks MultiViews
-                                        AllowOverride All
-                                        Order allow,deny
-                                        allow from all
-                                    </Directory>
-
-                                    <Files xmlrpc.php>
-                                        Order deny,allow
-                                        deny from all
-                                    </Files>
-
-                                    LogLevel notice
-                                    ErrorLog /var/www/log/october.localhost/apache2-error-october.localhost.log
-                                    CustomLog /var/www/log/october.localhost/apache2-access-october.localhost.log combined
-                                </VirtualHost>
-                                #AzbnAutoConfig
-
                             </textarea>
                         </div>
                         <div class="textarea__container">
                             <label for="nginx__template">Шаблон конфига nginx:</label>
                             <textarea id="nginx__template" name="" cols="50" rows="20" class="textarea__option" v-model="configFields.nginxTemplate">
                                 <plaintext>
-                            server {
 
-                                    listen 80;
-                                    server_name october.localhost www.october.localhost;
-
-
-                                    index index.php index.html index.htm;
-                                    root /var/www/sites/october.localhost/html;
-
-                                    access_log /var/www/log/october.localhost/nginx-access-october.localhost.log;
-                                    error_log /var/www/log/october.localhost/nginx-error-october.localhost.log;
-
-
-                                    location / {
-                                        proxy_pass http://127.0.0.1:17080/;
-                                        proxy_set_header Host $host;
-                                        proxy_set_header X-Real-IP $remote_addr;
-                                        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                                        proxy_connect_timeout 120;
-                                        proxy_send_timeout 120;
-                                        proxy_read_timeout 180;
-                                        proxy_buffering off;
-                                    }
-
-
-                                    location ~* \.(jpg|jpeg|gif|png|ico|icon|css|less|scss|bmp|swf|js|doc|docx|xls|xlsx|tiff|tar.gz|txt|pdf|psd|zip|rar|mp4|mpeg4|webm|mov|mp3|mkv|woff|woff2|ttf|svg|eot|otf|ttf)$ {
-                                        root /var/www/october.localhost/html;
-                                        expires 30d;
-                                        access_log off;
-                                    }
-
-
-                                    location /favicon.ico {
-                                        access_log off;
-                                        log_not_found off;
-                                    }
-
-
-                                    location /robots.txt {
-                                        access_log off;
-                                        log_not_found off;
-                                    }
-
-
-                                    location ~ /get8db0s {
-                                        deny all;
-                                    }
-
-
-                                    location ~ /\.ht {
-                                        deny all;
-                                    }
-
-
-                            }
-
-                            #need https:
-
-                            #AzbnAutoConfig
                             </textarea>
                         </div>
                     </div>
@@ -153,6 +69,11 @@
             </div>
             <div class="options-submit">
                 <div class="options-submit__container">
+                    <div class="submit">
+                        <button class="submit-option" v-on:click="setActiveSiteConfig">
+                            Выбрать
+                        </button>
+                    </div>
                     <div class="submit">
                         <button class="submit-option" v-on:click="saveSiteConfig">
                             Сохранить

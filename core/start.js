@@ -27,9 +27,7 @@ module.exports ={
         win.on('closed', () => {
             win = null
         })
-
         callback(win);
-
     },
     buildPath: function (p) {
         return p.replace(/\//g, path.sep).replace(/\\/g, path.sep);
