@@ -14,6 +14,7 @@ module.exports ={
             resizable: true,
             autoHideMenuBar: true,
             frame: false,
+            icon:path.join(global.appRoot,'/resources/static/img/icons8.png'),
         });
 
         win.setMenu(null);
