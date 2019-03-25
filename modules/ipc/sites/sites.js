@@ -52,7 +52,7 @@ module.exports = (win) => {
                 let message = `Произошла ошибка ${e}`;
                 msg = {data:message,type:'error'};
             }finally {
-                let dirMess = new alertWin('alert.ejs',msg,1.3);
+                let dirMess = new alertWin('alert.ejs',msg,1);
                 dirMess.init();
             }
 
