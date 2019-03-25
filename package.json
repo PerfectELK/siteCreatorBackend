@@ -16,6 +16,7 @@
   "dependencies": {
     "ejs-electron": "^2.0.3",
     "electron-builder": "^20.39.0",
+    "mkdirp": "^0.5.1",
     "sqlite3": "^4.0.6"
   }
 }

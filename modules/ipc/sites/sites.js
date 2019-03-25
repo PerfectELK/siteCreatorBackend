@@ -1,9 +1,9 @@
 const ipcMain = require('electron').ipcMain;
-const ipcRenderer = require('electron').ipcRenderer;
 const presets = require('./../../entities/presets/entity');
 const fs = require('fs');
+const mkdirp = require('mkdirp');
+const alertWin = require(`${global.appRoot}/core/vendor/windows/alertWin`);
 
-const {BrowserWindow} = require('electron');
 
 
 module.exports = (win) => {
@@ -23,12 +23,39 @@ module.exports = (win) => {
             nginxTemplate = nginxTemplate.replace(/{{site}}/g,siteName);
             nginxTemplate = nginxTemplate.replace(/{{sitesPath}}/g,sitesPath);
 
-            fs.writeFileSync(`./${input}-apache2.conf`,apache2Template);
-            fs.writeFileSync(`./${input}-nginx.conf`,nginxTemplate);
 
-            let message = `Конфиг файлы для сайта ${siteName} успешно созданы`;
+            let apacheFullPath = `${config.apache2_path}/sites-enabled/${input}`;
+            let nginxFullPath = `${config.nginx_path}/sites-enabled/${input}`;
 
-            require('../../../core/windows/alertWindow')('alert.ejs',{data:message,type:'success'});
+            let msg = {};
+
+            try{
+                fs.writeFileSync(apacheFullPath,apache2Template);
+                fs.writeFileSync(nginxFullPath,nginxTemplate);
+                let message = `Конфиг файлы для сайта ${siteName} успешно созданы`;
+                msg = {data:message,type:'success'};
+            }catch (e) {
+                let message = `Произошла ошибка ${e}`;
+                msg = {data:message,type:'error'};
+            }finally {
+                let confMess = new alertWin('alert.ejs',msg);
+                confMess.init();
+            }
+
+
+            try{
+                let siteDirPath = `${sitesPath}/${siteName}/html`;
+                mkdirp(siteDirPath);
+                let message = `Директории для сайта ${siteName} успешно созданы`;
+                msg = {data:message,type:'success'};
+            }catch (e) {
+                let message = `Произошла ошибка ${e}`;
+                msg = {data:message,type:'error'};
+            }finally {
+                let dirMess = new alertWin('alert.ejs',msg,1.3);
+                dirMess.init();
+            }
+
 
         });
     });
@@ -136,7 +163,7 @@ module.exports = (win) => {
 
     ipcMain.on('deleteSiteConfig', (e, id) => {
         let config = new presets({});
-        config.load(id, (config) => {
+        config.load(id,false,(config) => {
             config.delete();
             e.sender.send('siteWasCreated');
         })
@@ -144,7 +171,7 @@ module.exports = (win) => {
 
     ipcMain.on('saveSiteConfig', (e, item) => {
         let config = new presets({});
-        config.load(item.id, (config) => {
+        config.load(item.id,false,(config) => {
 
             config.name = item.name;
             config.site_path = item.sitePath;
@@ -172,7 +199,7 @@ module.exports = (win) => {
                items[i].save();
             }
             let config = new presets({});
-            config.load(id,(config) => {
+            config.load(id,false,(config) => {
                 config.active = 1;
                 config.save();
                 e.sender.send('siteWasCreated');
