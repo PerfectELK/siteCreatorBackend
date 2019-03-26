@@ -22,7 +22,7 @@ ipcRenderer.on('message',(e,data) => {
 });
 
 setTimeout(() => {
-    ipcRenderer.send('closeWindow');
+    ipcRenderer.send(`closeWindow${h}`);
 },6000);
 
 close.onclick = function(){

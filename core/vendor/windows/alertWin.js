@@ -11,16 +11,12 @@ class alertWin{
         this.msg = msg;
         this.offset = offset;
         this.msg.hash = crypto.randomBytes(20).toString('hex');
-        // console.log(this.msg.hash);
     }
 
     init(){
         let conf = JSON.parse(fs.readFileSync(`${global.appRoot}/config.json`));
         let width = 450;
         let height = 110;
-        // console.log(conf.height - height);
-        // console.log(height * this.offset);
-        // console.log((conf.height - height) - (height * this.offset));
 
         this.win = new BrowserWindow({
             width: width,
@@ -33,7 +29,6 @@ class alertWin{
         });
         this.win.setMenu(null);
         this.win.loadURL('file://' + __dirname + `/../../../resources/views/${this.file}`);
-       // this.win.openDevTools();
         this.win.show();
         this.win.webContents.on('dom-ready', () => {
             this.ipcRenderEvent();
