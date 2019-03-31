@@ -6,10 +6,9 @@ const path = require('path');
 
 class alertWin{
 
-    constructor(file,msg,offset = 0){
+    constructor(file,msg){
         this.file = file;
         this.msg = msg;
-        this.offset = offset;
         this.msg.hash = crypto.randomBytes(20).toString('hex');
     }
 
@@ -18,13 +17,14 @@ class alertWin{
         let width = 450;
         let height = 110;
 
+
         this.win = new BrowserWindow({
             width: width,
             height: height,
             resizable:false,
             frame: false ,
             x:conf.width - width,
-            y:(conf.height - height) - (height * this.offset),
+            y:(conf.height - height) - (height * global.windowAlertOffset),
             icon:path.join(global.appRoot,'/resources/static/img/icon_warning.png'),
         });
         this.win.setMenu(null);
@@ -33,13 +33,14 @@ class alertWin{
         this.win.webContents.on('dom-ready', () => {
             this.ipcRenderEvent();
         })
-
+        global.windowAlertOffset++;
     }
 
     ipcRenderEvent(){
 
         ipcMain.on(`closeWindow${this.msg.hash}`,(e) => {
             this.win.close();
+            global.windowAlertOffset--;
         });
 
         this.win.webContents.send('message',this.msg);

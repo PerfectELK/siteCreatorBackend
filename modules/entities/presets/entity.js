@@ -31,6 +31,13 @@ class presets extends entity{
         return this.item.nginx_path;
     }
 
+    get logs_dir(){
+        return this.item.logs_dir;
+    }
+    get root_and_group(){
+        return this.item.root_and_group;
+    }
+
     get apache2_template(){
         return this.item.apache2_template;
     }
@@ -65,6 +72,13 @@ class presets extends entity{
 
     set nginx_template(nginx_template){
         this.item.nginx_template = nginx_template;
+    }
+
+    set logs_dir(logs_dir){
+        this.item.logs_dir = logs_dir
+    }
+    set root_and_group(root_and_group){
+        this.item.root_and_group = root_and_group;
     }
 
 

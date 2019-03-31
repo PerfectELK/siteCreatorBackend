@@ -1,10 +1,17 @@
 const {app, BrowserWindow} = require('electron');
 const path = require('path');
+
+
 global.appRoot = path.resolve(__dirname);
+global.windowAlertOffset = 0;
+
 const url = require('url');
 const electron = require('electron');
 const {createWindow,buildPath} = require('./core/start');
 const fs = require('fs');
+
+
+
 
 const db = require('./core/vendor/sqlite/sqlite');
 
@@ -13,6 +20,8 @@ db.checkTableExist("presets",(res) => {
         require('./core/vendor/sqlite/patch/patch_presets')();
     }
 })
+
+
 
 
 

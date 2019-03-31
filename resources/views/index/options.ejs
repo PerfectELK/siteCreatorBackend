@@ -48,6 +48,14 @@
                             <label for="nginxPath">Путь до директории с nginx:</label>
                             <input id="nginxPath" type="text" class="input__option" v-model="configFields.nginxPath">
                         </div>
+                        <div class="input__option-container">
+                            <label for="logsDirectory">Путь до директории с логами:</label>
+                            <input id="logsDirectory" type="text" class="input__option" v-model="configFields.logsDirectory">
+                        </div>
+                        <div class="input__option-container">
+                            <label for="RootAndGroup">Владелец/Группа для директории с сайтами:</label>
+                            <input id="RootAndGroup" type="text" class="input__option" v-model="configFields.rootAndGroup">
+                        </div>
                     </div>
                     <div class="options-data__inputs-right">
                         <div class="textarea__container">

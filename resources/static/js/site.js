@@ -107,6 +107,8 @@ var options = Vue.component('options-c',{
                 nginxPath:"",
                 apache2Template:"",
                 nginxTemplate:"",
+                rootAndGroup:"",
+                logsDirectory:"",
             },
             configs:[],
         }
@@ -130,6 +132,8 @@ var options = Vue.component('options-c',{
             this.configFields.nginxPath = item.nginx_path;
             this.configFields.apache2Template = item.apache2_template;
             this.configFields.nginxTemplate = item.nginx_template;
+            this.configFields.rootAndGroup = item.root_and_group;
+            this.configFields.logsDirectory = item.logs_dir;
         },
         checkActivePreset:function(){
           for(var i = 0; i < this.configs.length; i++){
