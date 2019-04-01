@@ -35,6 +35,7 @@ var modalDelete = Vue.component('modal-body',{
 var modalChange = Vue.component('modal-body',{
     data:function(){
         return{
+            siteNameModel:this.siteName,
             nginx:"",
             apache2:"",
         }
@@ -42,7 +43,13 @@ var modalChange = Vue.component('modal-body',{
     props:['siteName'],
     methods:{
         change:function(){
-            console.log('site was changed');
+            site = {
+                name:this.siteName,
+                newName:this.siteNameModel,
+                nginx:this.nginx,
+                apache2:this.apache2,
+            };
+            ipcRenderer.send('changeSite',site);
         },
         quit:function(){
             this.$emit('quit');
@@ -58,22 +65,25 @@ var modalChange = Vue.component('modal-body',{
             this.apache2 = data.apache2;
         })
     },
-    updated: function () {
-        this.getSiteConfigs();
+    watch:{
+        siteName:function(){
+            this.siteNameModel = this.siteName;
+            this.getSiteConfigs();
+        }
     },
     template:' <div class="modal-body__change">\n' +
     '        <div class="change-container">\n' +
     '            <h1>Изменение сайта </h1>\n' +
     '            <div class="input-container">\n' +
     '                <label for="name">Название:</label>\n' +
-    '                <input type="text" id="name" v-bind:value="this.siteName">\n' +
+    '                <input type="text" id="name" v-model="siteNameModel">\n' +
     '                <label for="apache">Конфиг apache2:</label>\n' +
-    '                <textarea name="" id="apache" cols="30" rows="10">\n' +
-    '                    {{ this.apache2 }}\n' +
+    '                <textarea name="" id="apache" cols="30" rows="10" v-model="apache2">\n' +
+    '                    \n' +
     '                </textarea>\n' +
     '                <label for="nginx">Конфиг nginx:</label>\n' +
-    '                <textarea name="" id="nginx" cols="30" rows="10">\n' +
-    '                    {{ this.nginx }}\n' +
+    '                <textarea name="" id="nginx" cols="30" rows="10" v-model="nginx">\n' +
+    '                   \n' +
     '                </textarea>\n' +
     '                <div class="btn-container">\n' +
     '                    <button class="save-btn" v-on:click="change">\n' +
@@ -131,6 +141,15 @@ var main = Vue.component('main-c',{
         takeSites:function(data){
             this.sites = data;
         },
+        reloadApache2:function(){
+            ipcRenderer.send('reloadApache2');
+        },
+        reloadNginx:function(){
+            ipcRenderer.send('reloadNginx');
+        },
+        reloadMysql:function(){
+            ipcRenderer.send('reloadMysql');
+        }
     },
     created:function(){
         ipcRenderer.on("getedSites",(e,data) => {

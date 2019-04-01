@@ -16,6 +16,26 @@ async function exe(command){
 
 }
 
+function changeSite(data,config){
+
+    let siteFullPath = `${config.site_path}${data.name}`;
+    let apache2FullPath = `${config.apache2_path}sites-enabled/${data.name}`;
+    let nginxFullPath = `${config.nginx_path}sites-enabled/${data.name}`;
+
+    let apacheConfig = fs.readFileSync(apache2FullPath,"UTF-8");
+    let nginxConfig = fs.readFileSync(nginxFullPath,"UTF-8");
+
+    apacheConfig.replace(new RegExp( data.name, "g" ),data.newName);
+    nginxConfig.replace(new RegExp( data.name, "g" ),data.newName);
+
+    fs.renameSync(apache2FullPath,`${config.apache2_path}sites-enabled/${data.newName}`);
+    fs.renameSync(nginxFullPath ,`${config.nginx_path}sites-enabled/${data.newName}`);
+
+    fs.renameSync(siteFullPath,`${config.site_path}${data.newName}`);
+
+
+}
+
 
 module.exports = (win) => {
 
@@ -272,6 +292,63 @@ module.exports = (win) => {
 
             e.sender.send('takeSiteConfigs',response);
        });
+    });
+
+    ipcMain.on('changeSite',(e,data) => {
+
+
+        let config = new presets({});
+
+        config.load(1, 'active', config => {
+            try {
+                let nginxPath = config.nginx_path;
+                let apache2Path = config.apache2_path;
+
+                fs.writeFileSync(`${nginxPath}sites-enabled/${data.name}`, data.nginx);
+                fs.writeFileSync(`${apache2Path}sites-enabled/${data.name}`, data.apache2);
+
+                if (data.name.trim() != data.newName.trim()) {
+                    changeSite(data, config);
+                }
+                let msg = {data:"Изменения применены успешно",type:"success"};
+                new alertWin('alert.ejs',msg).init();
+            }catch (e) {
+                let msg = {data:`Ошибка: ${e}`,type:"error"};
+                new alertWin('alert.ejs',msg).init();
+            }
+        });
+
+
+    });
+
+    ipcMain.on('reloadApache2',(e) => {
+        exe(`service apache2 restart`).then(data => {
+            let msg = {data:"apache перезагружен",type:"success"};
+            new alertWin('alert.ejs',msg).init();
+        }).catch(e => {
+            let msg = {data:`Произошла ошибка при перезагрузке apache2: ${e}`,type:"error"};
+            new alertWin('alert.ejs',msg).init();
+        });
+    });
+
+    ipcMain.on('reloadNginx', (e) =>{
+        exe(`service nginx restart`).then(data => {
+            let msg = {data:"nginx перезагружен",type:"success"};
+            new alertWin('alert.ejs',msg).init();
+        }).catch(e => {
+            let msg = {data:`Произошла ошибка при перезагрузке nginx: ${e}`,type:"error"};
+            new alertWin('alert.ejs',msg).init();
+        });
+    });
+
+    ipcMain.on('reloadMysql', (e) =>{
+        exe(`service mysql restart`).then(data => {
+            let msg = {data:"mysql перезагружен",type:"success"};
+            new alertWin('alert.ejs',msg).init();
+        }).catch(e => {
+            let msg = {data:`Произошла ошибка при перезагрузке mysql: ${e}`,type:"error"};
+            new alertWin('alert.ejs',msg).init();
+        });
     });
 
 }

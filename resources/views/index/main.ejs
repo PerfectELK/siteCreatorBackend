@@ -41,17 +41,17 @@
                         <div class="config__container">
 
                             <div class="config-item">
-                                <button class="other__btn">
+                                <button class="other__btn" v-on:click="reloadApache2">
                                     Перезагрузить apache2
                                 </button>
                             </div>
                             <div class="config-item">
-                                <button class="other__btn">
+                                <button class="other__btn" v-on:click="reloadNginx">
                                     Перезагрузить nginx
                                 </button>
                             </div>
                             <div class="config-item">
-                                <button class="other__btn">
+                                <button class="other__btn" v-on:click="reloadMysql">
                                     Перезагрузить mysql
                                 </button>
                             </div>
