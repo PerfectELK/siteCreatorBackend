@@ -61,19 +61,24 @@ module.exports = (win) => {
             try{
                 let siteDirPath = `${sitesPath}/${siteName}/html`;
                 let logsPath = `${logs_dir}${siteName}`;
-                mkdirp(siteDirPath);
+
+                mkdirp(siteDirPath, err => {
+                    exe(`chown -R ${root_and_group} ${sitesPath}${siteName}`).then(data => {
+                        let msg = {data:"Права для директорий изменены успешно",type:"success"};
+                        new alertWin('alert.ejs',msg).init();
+                    }).catch(e => {
+                        let msg = {data:`Произошла ошибка: ${e}`,type:"error"};
+                        new alertWin('alert.ejs',msg).init();
+                    });
+                });
+
+
                 mkdirp(logsPath);
 
                 let message = `Директории для сайта ${siteName} успешно созданы`;
                 msg = {data:message,type:'success'};
 
-                exe(`chown -R ${root_and_group} ${sitesPath}${siteName}`).then(data => {
-                   let msg = {data:"Права для директорий изменены успешно",type:"success"};
-                   new alertWin('alert.ejs',msg).init();
-                }).catch(e => {
-                    let msg = {data:`Произошла ошибка: ${e}`,type:"error"};
-                    new alertWin('alert.ejs',msg).init();
-                });
+
 
             }catch (e) {
                 let message = `Произошла ошибка: ${e}`;
@@ -237,5 +242,36 @@ module.exports = (win) => {
         })
 
     })
+
+    ipcMain.on('getSites',(e) => {
+        let config = new presets({});
+        config.load(1,'active',(config) => {
+
+            let sitePath = config.site_path;
+            fs.readdir(sitePath,(err,items) => {
+               e.sender.send('getedSites',items);
+            });
+
+        })
+    })
+
+    ipcMain.on('getSiteConfigsMain',(e,siteName) => {
+       let config = new presets({});
+       config.load(1,'active',(config) => {
+
+            let nginxPath = config.nginx_path;
+            let apache2Path = config.apache2_path;
+
+            let nginxData = fs.readFileSync(`${nginxPath}sites-enabled/${siteName}`,"UTF-8");
+            let apache2Data = fs.readFileSync(`${apache2Path}sites-enabled/${siteName}`,"UTF-8");
+
+            let response = {
+                apache2:apache2Data,
+                nginx:nginxData,
+            };
+
+            e.sender.send('takeSiteConfigs',response);
+       });
+    });
 
 }

@@ -8,6 +8,7 @@ var modalDelete = Vue.component('modal-body',{
 
         }
     },
+    props:['siteName'],
     methods:{
       delete:function(){
           console.log('site was deleted');
@@ -16,24 +17,76 @@ var modalDelete = Vue.component('modal-body',{
           this.$emit('quit');
       }
     },
-    template:'#siteDeleteForm'
+    template:'<div class="modal-body__delete">\n' +
+    '        <div class="delete-container">\n' +
+    '            <h1>Удалить сайт {{ siteName }}?</h1>\n' +
+    '            <div class="delete-btn__container">\n' +
+    '                <button class="btn-yes">\n' +
+    '                    Да\n' +
+    '                </button>\n' +
+    '                <button class="btn-no" v-on:click="quit">\n' +
+    '                    Нет\n' +
+    '                </button>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>'
 });
 
 var modalChange = Vue.component('modal-body',{
     data:function(){
         return{
-
+            nginx:"",
+            apache2:"",
         }
     },
+    props:['siteName'],
     methods:{
         change:function(){
             console.log('site was changed');
         },
         quit:function(){
             this.$emit('quit');
+        },
+        getSiteConfigs:function(){
+            ipcRenderer.send("getSiteConfigsMain", this.siteName);
         }
     },
-    template:'#siteChangeForm',
+    created: function () {
+        this.getSiteConfigs();
+        ipcRenderer.on('takeSiteConfigs',(e,data) => {
+            this.nginx = data.nginx;
+            this.apache2 = data.apache2;
+        })
+    },
+    updated: function () {
+        this.getSiteConfigs();
+    },
+    template:' <div class="modal-body__change">\n' +
+    '        <div class="change-container">\n' +
+    '            <h1>Изменение сайта </h1>\n' +
+    '            <div class="input-container">\n' +
+    '                <label for="name">Название:</label>\n' +
+    '                <input type="text" id="name" v-bind:value="this.siteName">\n' +
+    '                <label for="apache">Конфиг apache2:</label>\n' +
+    '                <textarea name="" id="apache" cols="30" rows="10">\n' +
+    '                    {{ this.apache2 }}\n' +
+    '                </textarea>\n' +
+    '                <label for="nginx">Конфиг nginx:</label>\n' +
+    '                <textarea name="" id="nginx" cols="30" rows="10">\n' +
+    '                    {{ this.nginx }}\n' +
+    '                </textarea>\n' +
+    '                <div class="btn-container">\n' +
+    '                    <button class="save-btn" v-on:click="change">\n' +
+    '                        Сохранить\n' +
+    '                    </button>\n' +
+    '                    <button class="cancel-btn" v-on:click="quit">\n' +
+    '                        Отмена\n' +
+    '                    </button>\n' +
+    '                </div>\n' +
+    '\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>',
 });
 
 
@@ -45,7 +98,9 @@ var main = Vue.component('main-c',{
             currentModal:'modalDelete',
             create:{
                 input:"",
-            }
+            },
+            sites:[],
+            chooseSite:"",
         }
     },
     components:{
@@ -58,16 +113,33 @@ var main = Vue.component('main-c',{
         },
         changeSiteModal:function(siteName){
             this.currentModal = 'modalChange';
+            this.chooseSite = siteName;
             this.getModal();
         },
         deleteSiteModal:function(siteName){
             this.currentModal = 'modalDelete';
+            this.chooseSite = siteName;
             this.getModal();
         },
         createSite:function(){
             console.log(this.create.input);
             ipcRenderer.send('createSite',this.create.input);
-        }
+        },
+        getSites:function(){
+            ipcRenderer.send("getSites");
+        },
+        takeSites:function(data){
+            this.sites = data;
+        },
+    },
+    created:function(){
+        ipcRenderer.on("getedSites",(e,data) => {
+            this.takeSites(data);
+        })
+        this.getSites();
+    },
+    destroyed:function(){
+        ipcRenderer.removeAllListeners("getedSites");
     },
     computed:{
         deleteSite:function(){

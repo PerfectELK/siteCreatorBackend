@@ -17,12 +17,16 @@
                         <div class="site-list__items-container">
 
 
-                            <div class="site-item">
+                            <div class="site-item" v-for="site in sites">
                                 <h3 class="site-item__name">
-                                    Site name
+                                    {{ site }}
                                 </h3>
-                                <button class="site-item__change site__btn" v-on:click="changeSiteModal">Изменить</button>
-                                <button class="site-item__delete site__btn" v-on:click="deleteSiteModal">Удалить</button>
+                                <div class="site-item__btn-container">
+                                    <button class="site-item__change site__btn" v-on:click="changeSiteModal(site)">Изменить
+                                    </button>
+                                    <button class="site-item__delete site__btn" v-on:click="deleteSiteModal(site)">Удалить
+                                    </button>
+                                </div>
                             </div>
 
 
@@ -73,7 +77,7 @@
                         </div>
                     </div>
                     <div class="modal--body">
-                        <component v-on:quit="modalClose = !modalClose" v-bind:is="currentModal"></component>
+                        <component v-on:quit="modalClose = !modalClose" v-bind:siteName="chooseSite" v-bind:is="currentModal"></component>
                     </div>
                     <div class="modal--footer">
                     </div>
