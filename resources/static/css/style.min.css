@@ -69,11 +69,11 @@ table {
     background-color: #100e22
 }
 
-body {
-    overflow-y: hidden;
-    position: absolute;
-    width: 100%
-}
+/*body {*/
+    /*overflow-y: hidden;*/
+    /*position: absolute;*/
+    /*width: 100%*/
+/*}*/
 
 body {
     overflow-x: hidden
@@ -681,6 +681,7 @@ body {
     margin-top: .5em;
     border: 1px solid #100e22;
     background-color: #fff;
+    font-size: 1em;
     outline: 0;
     font-family: 'Nunito Sans';
     color: #100e22;
@@ -970,8 +971,10 @@ body {
     -webkit-app-region: no-drag;
     padding: 1em 10px
 }
-
-.navbar .navbar__block .navbar__block-item .navbar-list__container .navbar-list__item > a {
+.navbar .navbar__block .navbar__block-item .navbar-list__container a{
+    text-decoration: none;
+}
+.navbar .navbar__block .navbar__block-item .navbar-list__container a > .navbar-list__item  {
     color: #ddd;
     text-decoration: none;
     font-family: Montserrat;
@@ -980,13 +983,14 @@ body {
     -webkit-transition: all .4s ease;
     -o-transition: all .4s ease;
     transition: all .4s ease
+
 }
 
-.navbar .navbar__block .navbar__block-item .navbar-list__container .navbar-list__item:hover {
+.navbar .navbar__block .navbar__block-item .navbar-list__container a:hover > .navbar-list__item{
     background-color: #ddd
 }
 
-.navbar .navbar__block .navbar__block-item .navbar-list__container .navbar-list__item:hover > a {
+.navbar .navbar__block .navbar__block-item .navbar-list__container a:hover > .navbar-list__item  {
     color: #100e22
 }
 
@@ -1388,3 +1392,13 @@ body {
     left: 0;
     fill: #100e22
 }
+
+.router-link-exact-active{
+    background-color: #ddd;
+}
+.router-link-exact-active > li{
+    color:#100e22!important;
+}
+/*.is--active > a{*/
+    /*color:#100e22;*/
+/*}*/

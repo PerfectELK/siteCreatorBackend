@@ -10,18 +10,18 @@ var modalDelete = Vue.component('modal-body',{
     },
     props:['siteName'],
     methods:{
-      delete:function(){
-          console.log('site was deleted');
-      },
-      quit:function(){
-          this.$emit('quit');
-      }
+        quit: function () {
+            this.$emit('quit');
+        },
+        deleteSite: function () {
+            ipcRenderer.send('deleteSite',this.siteName);
+        }
     },
     template:'<div class="modal-body__delete">\n' +
     '        <div class="delete-container">\n' +
     '            <h1>Удалить сайт {{ siteName }}?</h1>\n' +
     '            <div class="delete-btn__container">\n' +
-    '                <button class="btn-yes">\n' +
+    '                <button class="btn-yes" v-on:click="deleteSite">\n' +
     '                    Да\n' +
     '                </button>\n' +
     '                <button class="btn-no" v-on:click="quit">\n' +
@@ -265,23 +265,10 @@ var options = Vue.component('options-c',{
 
 
 
-
-
-var exit = Vue.component('exit-c',{
-    data:() =>{
-        return{
-
-        }
-    },
-    template:"#exit"
-});
-
-
 var routes = [
     { path: '/', component: main },
     { path: '/options', component: options },
-    { path: '/exit', component: exit }
-]
+];
 
 var router = new VueRouter({
     routes
@@ -290,7 +277,8 @@ var router = new VueRouter({
 var app = new Vue({
     router,
     data:{
-
+        isActiveMain:true,
+        isActiveOpts:false,
     },
     methods:{
         turnAppWindow:function(){
@@ -304,117 +292,14 @@ var app = new Vue({
         closeApp:function(){
             console.log('Закрыть');
             ipcRenderer.send('closeApp');
+        },
+        setActiveMain:function(){
+            this.isActiveMain = true;
+            this.isActiveOpts = false;
+        },
+        setActiveOpts:function(){
+            this.isActiveMain = false;
+            this.isActiveOpts = true;
         }
     }
 }).$mount('#app');
-
-
-
-
-const scrollbar = document.getElementById('scrollbar');
-const scrollItem = document.getElementById('scrollItem');
-
-let windowHeight = window.innerHeight;
-let contentHeight = Math.max(document.body.scrollHeight);
-let scrollItemLenght = Math.ceil(windowHeight * windowHeight/contentHeight);
-
-scrollInit();
-
-function scrollInit(){
-    windowHeight = window.innerHeight;
-    contentHeight = Math.max(document.body.scrollHeight);
-    scrollItemLenght = Math.ceil(windowHeight * windowHeight/contentHeight);
-    setScrollItemlenght();
-}
-
-function getScrollItemHeight(){
-    let windowHeight = window.innerHeight;
-    let contentHeight = Math.max(document.body.scrollHeight);
-    return Math.ceil(windowHeight * windowHeight/contentHeight)
-}
-
-function setScrollItemlenght(){
-    scrollItem.style.height = getScrollItemHeight() + "px";
-}
-
-function checkBody(e){
-    let scrollheight = parseInt((e.deltaY > 0) ? parseInt(document.body.style.top) - Math.abs(e.deltaY) : parseInt(document.body.style.top) + Math.abs(e.deltaY)) || 0;
-
-
-    let bodyOffset = parseInt(document.body.style.top) || 0;
-    let scrolled = (e.deltaY > 0) ? bodyOffset - Math.abs(e.deltaY) : bodyOffset + Math.abs(e.deltaY);
-
-    if(scrollheight >= 0 && e.deltaY < 0){
-        document.body.style.top = "0px";
-        scrollItem.style.top = "0%";
-        return false;
-    }
-    let scrollWithWindowHeight = Math.abs(scrollheight) + window.innerHeight;
-
-    if(scrollWithWindowHeight >= contentHeight + 50){
-        document.body.style.top = -contentHeight + windowHeight - 50 + 'px';
-        moveScrollBar(scrolled);
-        return false;
-    }
-
-    return true
-}
-
-function moveScrollBar(scrolled){
-
-    let scrolledHeight = Math.ceil(((Math.abs(scrolled)) / contentHeight) * 100);
-    scrollItem.style.top = scrolledHeight + "%";
-}
-
-function scroll(e){
-    if(!checkBody(e))return false
-    let bodyOffset = parseInt(document.body.style.top) || 0;
-    let scrolled = (e.deltaY > 0) ? bodyOffset - Math.abs(e.deltaY) : bodyOffset + Math.abs(e.deltaY);
-    document.body.style.top = (e.deltaY > 0) ? bodyOffset - Math.abs(e.deltaY) + "px" : bodyOffset + Math.abs(e.deltaY) + "px";
-    moveScrollBar(scrolled);
-}
-
-
-window.onresize = function(){
-    scrollInit();
-}
-
-document.body.addEventListener('click',function(){
-    scrollInit();
-})
-
-document.body.addEventListener('wheel',function (e) {
-    if(windowHeight >= contentHeight)return false
-
-    let ev = {
-        deltaY:35 * Math.sign(e.deltaY)
-    }
-    scroll(ev)
-})
-
-let scrollItemDown = false;
-let clickCoordY = 0;
-
-console.log(window.innerHeight);
-
-
-document.body.onmousemove = function(e){
-    if(scrollItemDown){
-        let deltaY = (e.y - clickCoordY) * 2
-        let ev = {
-            deltaY:deltaY
-        };
-        clickCoordY = e.y
-        scroll(ev)
-    }
-}
-
-document.body.onmouseup = function(e){
-    scrollItemDown = false;
-}
-
-scrollItem.onmousedown = function(e){
-    e.preventDefault()
-    scrollItemDown = true;
-    clickCoordY = e.y;
-}

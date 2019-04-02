@@ -9,12 +9,13 @@ module.exports ={
     createWindow: function (view,callback) {
 
         win = new BrowserWindow({
-            width: 1150,
-            height: 720,
+            width: 1680,
+            height: 860,
             resizable: true,
             autoHideMenuBar: true,
             frame: false,
             icon:path.join(global.appRoot,'/resources/static/img/icons8.png'),
+            devTools: false
         });
 
         win.setMenu(null);
@@ -23,11 +24,11 @@ module.exports ={
 
         win.loadURL('file://' + __dirname + `/../resources/views/${view}`);
 
-        win.openDevTools();
-
         win.on('closed', () => {
             win = null
         })
+
+
         callback(win);
     },
     buildPath: function (p) {

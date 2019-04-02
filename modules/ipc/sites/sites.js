@@ -21,12 +21,21 @@ function changeSite(data,config){
     let siteFullPath = `${config.site_path}${data.name}`;
     let apache2FullPath = `${config.apache2_path}sites-enabled/${data.name}`;
     let nginxFullPath = `${config.nginx_path}sites-enabled/${data.name}`;
+    let logsPath = `${config.logs_dir}${data.name}`;
+
 
     let apacheConfig = fs.readFileSync(apache2FullPath,"UTF-8");
     let nginxConfig = fs.readFileSync(nginxFullPath,"UTF-8");
 
-    apacheConfig.replace(new RegExp( data.name, "g" ),data.newName);
-    nginxConfig.replace(new RegExp( data.name, "g" ),data.newName);
+    let replacedApacheConf = apacheConfig.replace(new RegExp( data.name, "g" ),data.newName);
+    let replacedNginxConf = nginxConfig.replace(new RegExp( data.name, "g" ),data.newName);
+
+
+    fs.renameSync(logsPath,`${config.logs_dir}${data.newName}`);
+
+    fs.writeFileSync(apache2FullPath,replacedApacheConf);
+    fs.writeFileSync(nginxFullPath,replacedNginxConf);
+
 
     fs.renameSync(apache2FullPath,`${config.apache2_path}sites-enabled/${data.newName}`);
     fs.renameSync(nginxFullPath ,`${config.nginx_path}sites-enabled/${data.newName}`);
@@ -321,9 +330,17 @@ module.exports = (win) => {
 
     });
 
+    // ipcMain.on('deleteSite',(e,data) => {
+    //
+    // });
+
+
+
+
+
     ipcMain.on('reloadApache2',(e) => {
         exe(`service apache2 restart`).then(data => {
-            let msg = {data:"apache перезагружен",type:"success"};
+            let msg = {data:"apache2 перезагружен",type:"success"};
             new alertWin('alert.ejs',msg).init();
         }).catch(e => {
             let msg = {data:`Произошла ошибка при перезагрузке apache2: ${e}`,type:"error"};
@@ -350,5 +367,7 @@ module.exports = (win) => {
             new alertWin('alert.ejs',msg).init();
         });
     });
+
+
 
 }
