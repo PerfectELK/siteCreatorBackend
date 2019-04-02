@@ -5,17 +5,53 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "postinstall": "install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "create-debian-installer": "electron-installer-debian --src dist/unpacked --dest dist/installer --arch amd64 --config debian.json",
+    "build_all":"electron-packager . myApp --all --out=dist --ignore=dist --prune",
+    "dists": "build"
   },
-  "keywords": [],
-  "author": "",
+  "build": {
+    "appId": "siteCreator",
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "squirrel",
+      "icon": "recources/static/img/icons8.png"
+    }
+  },
+    "keywords": [],
+  "author": {
+    "name":"pelk",
+    "email":"pelk@pelk.ru"
+  },
   "license": "ISC",
   "devDependencies": {
-    "electron": "4.0.0"
+    "electron": "4.0.0",
+    "electron-packager": "^13.1.1",
+    "electron-builder": "^20.39.0"
   },
   "dependencies": {
     "ejs-electron": "^2.0.3",
-    "electron-builder": "^20.39.0",
     "mkdirp": "^0.5.1",
     "sqlite3": "^4.0.6"
   }
