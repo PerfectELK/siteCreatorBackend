@@ -1,5 +1,5 @@
-@import "https://fonts.googleapis.com/css?family=Montserrat";
-@import "https://fonts.googleapis.com/css?family=Nunito+Sans";
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+@import url(https://fonts.googleapis.com/css?family=Nunito+Sans);
 
 a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, iframe, img, ins, kbd, label, legend, li, mark, menu, nav, object, ol, output, p, pre, q, ruby, s, samp, section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, ul, var, video {
     margin: 0;
@@ -50,33 +50,9 @@ table {
     background-color: #787878
 }
 
-.scrollbar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 100%;
-    width: 10px;
-    background-color: #1ecbc6;
-    z-index: 1
-}
-
-.scrollbar .scrollbar__container .scroll-item {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 20%;
-    width: 10px;
-    background-color: #100e22
-}
-
-/*body {*/
-    /*overflow-y: hidden;*/
-    /*position: absolute;*/
-    /*width: 100%*/
-/*}*/
 
 body {
-    overflow-x: hidden
+    overflow-X: hidden
 }
 
 @media screen and (max-width: 1200px) {
@@ -84,16 +60,7 @@ body {
         -webkit-box-orient: vertical !important;
         -webkit-box-direction: normal !important;
         -ms-flex-direction: column !important;
-        flex-direction: column !important;
-        -webkit-box-pack: center !important;
-        -ms-flex-pack: center !important;
-        justify-content: center !important;
-        -ms-flex-line-pack: center;
-        align-content: center;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        margin-left: 0 !important
+        flex-direction: column !important
     }
 
     .main .main__container .create-site {
@@ -131,18 +98,20 @@ body {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: horizontal;
+    -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -ms-flex-pack: distribute;
-    justify-content: space-around;
+    -ms-flex-direction: column;
+    flex-direction: column;
     -webkit-box-flex: 1;
     -ms-flex: 1;
     flex: 1;
     position: relative;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap
+}
+
+.main .main__container .create-site {
+    margin-top: 2em
 }
 
 .main .main__container .create-site .create-site__container {
@@ -163,6 +132,7 @@ body {
 }
 
 .main .main__container .create-site .create-site__container .create-site__btn {
+    max-width: 400px;
     outline: 0;
     border: none;
     background-color: #100e22;
@@ -172,22 +142,12 @@ body {
     cursor: pointer
 }
 
-.main .main__container .create-site .create-site__container .other__btn {
-    outline: 0;
-    border: none;
-    background-color: #100e22;
-    color: #ddd;
-    font-family: 'Nunito Sans';
-    font-size: 1.4em;
-    cursor: pointer;
-    margin-top: .5em
-}
-
 .main .main__container .create-site .create-site__container .create-site__btn:active {
     background-color: #787878
 }
 
 .main .main__container .create-site .create-site__container .create-site__input {
+    max-width: 400px;
     margin-bottom: .5em;
     margin-top: .5em;
     border: 1px solid #100e22;
@@ -209,7 +169,7 @@ body {
 }
 
 .main .main__container .site-list {
-    margin-left: 2em
+    margin-top: 2em
 }
 
 @media screen and (max-width: 1200px) {
@@ -229,10 +189,12 @@ body {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: vertical;
+    -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap
 }
 
 @media screen and (max-width: 1200px) {
@@ -243,15 +205,12 @@ body {
         flex-direction: row;
         -ms-flex-wrap: wrap;
         flex-wrap: wrap;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center
-    }
-    .main .main__container .site-list .site-list__container .site-list__items .site-list__items-container .site-item {
-        flex:1 1 auto;
+        /*-webkit-box-pack: center;*/
+        /*-ms-flex-pack: center;*/
+        /*justify-content: center;*/
+        /*-webkit-box-align: center;*/
+        /*-ms-flex-align: center;*/
+        /*align-items: center*/
     }
 }
 
@@ -260,17 +219,15 @@ body {
     display: -ms-flexbox;
     display: flex;
     margin-top: 1em;
-    -webkit-box-orient: horizontal;
+    margin-left: .5em;
+    -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
     -webkit-box-pack: start;
     -ms-flex-pack: start;
-    justify-content: flex-start
-}
-
-.main .main__container .site-list .site-list__container .site-list__items .site-list__items-container .site-item .site-item__btn-container{
-    margin: 0 auto;
+    justify-content: flex-start;
+    width: 300px
 }
 
 .main .main__container .site-list .site-list__container .site-list__items .site-list__items-container .site-item .site-item__name {
@@ -278,10 +235,11 @@ body {
     font-size: 1.2em;
     -ms-flex-item-align: center;
     align-self: center;
+    padding-right: 1em
 }
 
 .config-list {
-    margin-left: 1em
+    margin-top: 2em
 }
 
 @media screen and (max-width: 1200px) {
@@ -291,15 +249,15 @@ body {
     }
 }
 
-@media screen and (max-width: 1200px) {
-    .config-list .config-list__container .config-list__header {
-        text-align: center
-    }
+/*@media screen and (max-width: 1200px) {*/
+    /*.config-list .config-list__container .config-list__header {*/
+        /*text-align: center*/
+    /*}*/
 
-    .config-list .config-list__container {
-        margin-top: 2em
-    }
-}
+    /*.config-list .config-list__container {*/
+        /*margin-top: 2em*/
+    /*}*/
+/*}*/
 
 .config-list .config-list__container .config-list__header {
     font-family: 'Nunito Sans';
@@ -328,20 +286,19 @@ body {
     flex-direction: column;
     -webkit-box-pack: start;
     -ms-flex-pack: start;
-    justify-content: flex-start
+    justify-content: flex-start;
+    width:400px;
+    margin-top:0.5em;
 }
-
-.config-list .config-list__container .config .config__container .config-item .other__btn {
+.config-list .config-list__container .config .config__container .config-item .other__btn{
     outline: 0;
     border: none;
     background-color: #100e22;
     color: #ddd;
     font-family: 'Nunito Sans';
     font-size: 1.4em;
-    cursor: pointer;
-    margin-top: .5em
+    cursor: pointer
 }
-
 .config-list .config-list__container .config .config__container .config-item .config-item__description {
     max-width: 500px;
     font-family: 'Nunito Sans';
@@ -681,7 +638,6 @@ body {
     margin-top: .5em;
     border: 1px solid #100e22;
     background-color: #fff;
-    font-size: 1em;
     outline: 0;
     font-family: 'Nunito Sans';
     color: #100e22;
@@ -852,11 +808,7 @@ body {
     width: 20px;
     height: 20px;
     cursor: pointer;
-    -webkit-app-region: no-drag
-}
-
-.navbar .navbar__block .navbar__block-item .navbar__icons .nav-icons__container .icon-item__block:nth-child(3) {
-    margin-right: 1.5em
+    -webkit-app-region: no-drag;
 }
 
 .navbar .navbar__block .navbar__block-item .navbar__icons .nav-icons__container .icon-item__block:hover > .turn {
@@ -961,20 +913,40 @@ body {
     flex-wrap: nowrap;
     -webkit-box-pack: start;
     -ms-flex-pack: start;
-    justify-content: flex-start
+    justify-content: flex-start;
+    -webkit-app-region: no-drag;
 }
 
-.navbar .navbar__block .navbar__block-item .navbar-list__container .navbar-list__item {
+.navbar .navbar__block .navbar__block-item .navbar-list__container a .navbar-list__item {
+    padding-left: 10px;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    padding-right: 10px;
     -webkit-transition: all .4s ease;
     -o-transition: all .4s ease;
-    transition: all .4s ease;
-    -webkit-app-region: no-drag;
-    padding: 1em 10px
+    transition: all .4s ease
 }
-.navbar .navbar__block .navbar__block-item .navbar-list__container a{
+.navbar-list__container > a{
     text-decoration: none;
+    color:#ddd;
+    font-family: Montserrat;
+    font-size: 1.2em;
 }
-.navbar .navbar__block .navbar__block-item .navbar-list__container a > .navbar-list__item  {
+
+.navbar-list__container > a:hover{
+    color: #dddddd;
+}
+
+.navbar-list__container > .router-link-exact-active{
+    color: #100e22;
+    background-color: #ddd;
+}
+.navbar-list__container > .router-link-exact-active:hover{
+    color: #100e22;
+    background-color: #ddd;
+}
+
+.navbar .navbar__block .navbar__block-item .navbar-list__containera > .navbar-list__item   {
     color: #ddd;
     text-decoration: none;
     font-family: Montserrat;
@@ -982,17 +954,17 @@ body {
     font-weight: bolder;
     -webkit-transition: all .4s ease;
     -o-transition: all .4s ease;
-    transition: all .4s ease
-
+    transition: all .4s ease;
+    -webkit-app-region: no-drag;
 }
 
-.navbar .navbar__block .navbar__block-item .navbar-list__container a:hover > .navbar-list__item{
-    background-color: #ddd
-}
+/*.navbar .navbar__block .navbar__block-item .navbar-list__container .navbar-list__item:hover {*/
+    /*background-color: #ddd*/
+/*}*/
 
-.navbar .navbar__block .navbar__block-item .navbar-list__container a:hover > .navbar-list__item  {
-    color: #100e22
-}
+/*.navbar .navbar__block .navbar__block-item .navbar-list__container .navbar-list__item:hover > a {*/
+    /*color: #100e22*/
+/*}*/
 
 @-webkit-keyframes plusAnimate {
     from {
@@ -1392,13 +1364,3 @@ body {
     left: 0;
     fill: #100e22
 }
-
-.router-link-exact-active{
-    background-color: #ddd;
-}
-.router-link-exact-active > li{
-    color:#100e22!important;
-}
-/*.is--active > a{*/
-    /*color:#100e22;*/
-/*}*/

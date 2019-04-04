@@ -24,6 +24,7 @@ module.exports ={
 
         win.loadURL('file://' + __dirname + `/../resources/views/${view}`);
 
+
         win.on('closed', () => {
             win = null
         })
